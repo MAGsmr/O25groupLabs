@@ -12,5 +12,6 @@ package netcracker.tree;
  */
 public interface ITreePool {
     public void put(ITreeNode tree);
+    public boolean removeTreeFromPool(int key);
     public ITreeNode get(int key);
 }

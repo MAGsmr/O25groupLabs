@@ -30,15 +30,24 @@ public class TreePool implements ITreePool{
         if(tree!=null)
             pool.add(tree);
     }
+    @Override
+    public boolean removeTreeFromPool(int key) {
+        for (int i =0;i<pool.size();i++)
+            if (pool.get(i).getKey() == key) {
+                pool.remove(i);
+                return true;
+            }
+        return false;
+    }
 
     @Override
-    public ITreeNode get(int key) {
+    public ITreeNode get(int key) { // если два различный дерева начинаются с одинаковых вершин
         int i =0;
         while(i < pool.size()){
             if(pool.get(i).getKey()==key)
                 return pool.get(i);
             i++;
-                }
+        }
         return null;    
     }
     

@@ -18,12 +18,13 @@ public class TreeView implements ITreeView{
     @Override
     public void input(){
         Scanner sc = new Scanner(System.in);
-        String help ="Создать дерево с корневым узлом: create <key> <value>\n";
+        String help ="Создать дерево с корневым узлом: create <key> <value>\n";//
         help+="Открыть дерево: open <key>\n";
         help+="Открыть узел текущего дерева: show <key>\n";
         help+="Закрыть узел текущего дерева: hide <key>\n";
-        help+="Добавить узел в открытое дерево: add <key> <value>\n";
-        help+="Удалить узел в открытом дереве: remove <key> <value>\n";
+        help+="Добавить узел в открытое дерево: add <key> <value>\n";//
+        help+="Удалить узел в открытом дереве: remove <key> \n";//
+        help+="Удалить открытое дерево: removeTree \n";
         String command;
         String[] components;
         System.out.println("Введите команду (справка help):");
@@ -36,6 +37,69 @@ public class TreeView implements ITreeView{
                         System.out.println(help);
                         break;
                     }
+                    case "create":{
+                        int key = 0;
+                        if(components.length == 3) {
+                            try {
+                                key = Integer.parseInt(components[1]);
+                                Object value = components[2];
+                                tree = TreeController.getInstance().create(key, value);
+                                if (tree != null)
+                                    showTree(tree, 0, 2);
+                                else
+                                    System.out.println("Дерево не было создано, проверьте правильность входных параметров (справка help).");
+                            } catch (Exception e) {
+                                System.out.println("Функция create в качестве первого параметра должна принимать целое число (справка help).");
+                            }
+                        }
+                        else
+                            System.out.println("Функция create должна принимать 2 параметра (справка help).");
+
+                        break;
+                    }
+                    case "add":{
+                        int key = 0;
+                        if(components.length == 3) {
+                            try {
+                                key = Integer.parseInt(components[1]);
+                                Object value = components[2];
+                                if (tree != null) {
+                                    TreeController.getInstance().addNode(tree, key, value);
+                                    showTree(tree, 0, 2);
+                                } else
+                                    System.out.println("Не открыто дерево для выполнения команды (справка help).");
+                            } catch (Exception e) {
+                                System.out.println("Функция add в качестве первого параметра должна принимать целое число (справка help).");
+                            }
+                        }
+                        else
+                            System.out.println("Функция add должна принимать 2 параметра (справка help).");
+                        break;
+                    }
+                    case "remove":{
+                        int key = 0;
+                        if(components.length == 2) {
+                            try {
+                                key = Integer.parseInt(components[1]);
+
+                                if (tree != null) {
+                                    if (tree.getKey() != key) {
+                                        TreeController.getInstance().removeNode(tree, key);
+                                        showTree(tree, 0, 2);
+                                    } else
+                                        System.out.println("Воспользуйтесь удалением дерева целиком");
+                                } else
+                                    System.out.println("Не открыто дерево для выполнения команды (справка help).");
+                            } catch (Exception e) {
+                                System.out.println("Функция remove должна принимать целочисленный параметр (справка help).");
+                            }
+                        }
+                        else
+                            System.out.println("Функция remove должна принимать 1 параметра (справка help).");
+                        break;
+                    }
+
+
                     case "open":{
                         int key = 0;
                         if(components.length == 2){
@@ -89,64 +153,19 @@ public class TreeView implements ITreeView{
                             System.out.println("Функция hide должна принимать 1 параметр (справка help).");
                         break;
                     }
-                    case "add":{
-                        int key = 0;
-                        if(components.length == 3) {
-                            try {
-                                key = Integer.parseInt(components[1]);
-                                Object value = components[2];
-                                if (tree != null) {
-                                    TreeController.getInstance().addNode(tree, key, value);
-                                    showTree(tree, 0, 2);
-                                } else
-                                    System.out.println("Не открыто дерево для выполнения команды (справка help).");
-                            } catch (Exception e) {
-                                System.out.println("Функция add в качестве первого параметра должна принимать целое число (справка help).");
-                            }
-                        }
-                        else
-                            System.out.println("Функция add должна принимать 2 параметра (справка help).");
-                        break;
-                    }
-                    case "create":{
-                        int key = 0;
-                        if(components.length == 3) {
-                            try {
-                                key = Integer.parseInt(components[1]);
-                                Object value = components[2];
-                                tree = TreeController.getInstance().create(key, value);
-                                if (tree != null)
-                                    showTree(tree, 0, 2);
-                                else
-                                    System.out.println("Дерево не было создано, проверьте правильность входных параметров (справка help).");
-                            } catch (Exception e) {
-                                System.out.println("Функция create в качестве первого параметра должна принимать целое число (справка help).");
-                            }
-                        }
-                        else
-                            System.out.println("Функция create должна принимать 2 параметра (справка help).");
+                    case "removeTree":{
+                        if (tree != null) {
+                            TreeController.getInstance().removeTree(tree.getKey());
+                            tree= null;
+                        } else
+                            System.out.println("Не открыто дерево для выполнения команды (справка help).");
 
-                            break;
-                    }
-                    case "remove":{
-                        System.out.println("[!] Операция на данный момент не реализована.");
-                        int key = 0;
-                        if(components.length == 2) {
-                            try {
-                                key = Integer.parseInt(components[1]);
-                                if (tree != null) {
-                                    TreeController.getInstance().removeNode(tree, key);
-                                    showTree(tree, 0, 2);
-                                } else
-                                    System.out.println("Не открыто дерево для выполнения команды (справка help).");
-                            } catch (Exception e) {
-                                System.out.println("Функция remove должна принимать целочисленный параметр (справка help).");
-                            }
-                        }
-                        else
-                            System.out.println("Функция remove должна принимать 1 параметра (справка help).");
                         break;
                     }
+
+
+
+
                     default:
                         System.out.println("Неизвестная команда "+components[0] +" (справка help).");
                         break;

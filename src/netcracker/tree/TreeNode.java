@@ -81,7 +81,7 @@ public class TreeNode implements ITreeNode{
 
     @Override
     public void setLeft(ITreeNode node) {
-        if(node!=null)
+        //if(node!=null) // нужно для удаления
             left =  (TreeNode) node;
     }
 
@@ -92,7 +92,7 @@ public class TreeNode implements ITreeNode{
 
     @Override
     public void setRight(ITreeNode node) {
-        if(node!=null)
+        //if(node!=null)
             right = (TreeNode) node;
     }
     
