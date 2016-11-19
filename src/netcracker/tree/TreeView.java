@@ -24,6 +24,7 @@ public class TreeView implements ITreeView{
         help+="Закрыть узел текущего дерева: hide <key>\n";
         help+="Добавить узел в открытое дерево: add <key> <value>\n";//
         help+="Удалить узел в открытом дереве: remove <key> \n";//
+        help+="Поиск узла в открытом дереве: find <key> \n";
         help+="Удалить открытое дерево: removeTree \n";
         String command;
         String[] components;
@@ -98,7 +99,27 @@ public class TreeView implements ITreeView{
                             System.out.println("Функция remove должна принимать 1 параметра (справка help).");
                         break;
                     }
-
+                    case "find":{
+                        int key = 0;
+                        if(components.length == 2) {
+                            try {
+                                key = Integer.parseInt(components[1]);
+                                if (tree != null) {
+                                    ITreeNode node = TreeController.getInstance().findNode(tree, key);
+                                    if (node!=null) {
+                                        printNode(node, 2);
+                                    } else
+                                        System.out.println("Узел с таким ключом не найден.");
+                                } else
+                                    System.out.println("Не открыто дерево для выполнения команды (справка help).");
+                            } catch (Exception e) {
+                                System.out.println("Функция find должна принимать целочисленный параметр (справка help).");
+                            }
+                        }
+                        else
+                            System.out.println("Функция find должна принимать 1 параметра (справка help).");
+                        break;
+                    }
 
                     case "open":{
                         int key = 0;
@@ -125,7 +146,10 @@ public class TreeView implements ITreeView{
                             try {
                                 key = Integer.parseInt(components[1]);
                                 if (tree != null)
-                                    showNode(tree, key, 0, 2);
+                                    if(TreeController.getInstance().findNode(tree, key)!=null)
+                                        showNode(tree, key, 0, 2);
+                                    else
+                                        System.out.println("Невозможно раскрыть несуществующий узел (справка help):");
                                 else
                                     System.out.println("Не открыто дерево для выполнения команды (справка help):");
                             } catch (Exception e) {
@@ -142,7 +166,10 @@ public class TreeView implements ITreeView{
                             try {
                                 key = Integer.parseInt(components[1]);
                                 if (tree != null)
-                                    hideNode(tree, key, 0, 2);
+                                    if(TreeController.getInstance().findNode(tree, key)!=null)
+                                        hideNode(tree, key, 0, 2);
+                                    else
+                                        System.out.println("Невозможно свернуть несуществующий узел (справка help):");
                                 else
                                     System.out.println("Не открыто дерево для выполнения команды (справка help):");
                             } catch (Exception e) {
@@ -178,6 +205,7 @@ public class TreeView implements ITreeView{
 
     @Override
     public void showNode(ITreeNode tree, int key, int startOffset, int offset) {
+
         System.out.println("[===| Открытие узла |===]");
         showNodeRec(tree, key, startOffset, offset);
         System.out.println("[=======================]");
@@ -230,17 +258,17 @@ public class TreeView implements ITreeView{
         if(tree!=null){
             printNode(tree, startOffset);
             if(tree.getKey()<key){
-
-                printNode(tree.getLeft(), startOffset+offset);
-                showNodeRec(tree.getRight(), key, startOffset+offset, offset);
+                if(tree.getLeft()!=null)
+                    printNode(tree.getLeft(), startOffset+offset);
+                if(tree.getRight()!=null)
+                    hideNodeRec(tree.getRight(), key, startOffset+offset, offset);
             }
             else
             if(tree.getKey()>key){
-                printNode(tree.getRight(), startOffset+offset);
-                showNodeRec(tree.getLeft(), key, startOffset+offset, offset);
-            }
-            else{
-                printNode(tree.getRight(), startOffset+offset);
+                if(tree.getRight()!=null)
+                    printNode(tree.getRight(), startOffset+offset);
+                if(tree.getLeft()!=null)
+                    hideNodeRec(tree.getLeft(), key, startOffset+offset, offset);
             }
         }
     }

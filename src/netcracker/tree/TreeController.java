@@ -136,7 +136,19 @@ public class TreeController implements ITreeController{
 
     @Override
     public ITreeNode findNode(ITreeNode tree, int key) {
-        return null;
+        ITreeNode root = null;
+        if(tree!=null){
+            if(key>tree.getKey()) {
+                root = findNode(tree.getRight(), key);
+            }
+            else
+            if(key<tree.getKey()) {
+                root = findNode(tree.getLeft(), key);
+            }
+            else
+                root = tree;
+        }
+        return root;
     }
 
     @Override
