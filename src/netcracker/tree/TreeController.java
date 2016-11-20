@@ -1,5 +1,8 @@
 package netcracker.tree;
 
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -125,13 +128,9 @@ public class TreeController implements ITreeController{
         return TreePool.getInstance().get(key);
     }
 
-    //==================================================
-    //Методы ниже не реализован
-    //==================================================
     @Override
     public boolean removeTree(int key) {
         return TreePool.getInstance().removeTreeFromPool(key);
-
     }
 
     @Override
@@ -149,6 +148,177 @@ public class TreeController implements ITreeController{
                 root = tree;
         }
         return root;
+    }
+
+    @Override
+    public boolean save(ITreeNode tree, String fileName) throws IOException{
+        Writer fw = new FileWriter(fileName);
+        boolean isSaved = false;
+        try {
+            fw.write(toJson(tree));
+            isSaved = true;
+        }
+        finally {
+            fw.close();
+        }
+        return isSaved;
+    }
+
+    private String toJson(ITreeNode node){
+        String json = "";
+        if(node!=null){
+            json +="{";
+            json+="key:"+node.getKey()+",value:"+node.getData()+",";
+            json+="left:"+toJson(node.getLeft());
+            json+=",";
+            json+="right:"+toJson(node.getRight())+"}";
+        }
+        else
+            json = "null";
+        return json;
+    }
+
+    public ITreeNode load(String fileName) throws IOException{
+        Reader fr = new FileReader(fileName);
+        ITreeNode node = null;
+        try {
+            StringBuilder sb = new StringBuilder();
+            BufferedReader bf = new BufferedReader(fr);
+            while(bf.ready()){
+                sb.append(bf.readLine());
+            }
+            node = parseJson(sb.toString());
+        }
+        finally {
+            fr.close();
+        }
+        return node;
+    }
+
+    private ITreeNode parseJson(String json){
+        ITreeNode root = null;
+
+        List<JsonObject> list = getJsonObjects(json);
+        if(list.size()==4){
+            Integer key = null;
+            String value = null;
+            String left = null;
+            String right = null;
+            for(int i =0; i < list.size(); i++){
+                switch (list.get(i).getKey()){
+                    case "key":
+                        key = Integer.parseInt(list.get(i).getValue());
+                        break;
+                    case "value":
+                        value = list.get(i).getValue();
+                        break;
+                    case "left":
+                        left = list.get(i).getValue();
+                        break;
+                    case "right":
+                        right = list.get(i).getValue();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if(key!=null && value!=null){
+                root= new TreeNode(key, root);
+                if(left!=null){
+                    root.setLeft(parseJson(left));
+                    if(root.getLeft()!=null)
+                        root.getLeft().setParent(root);
+                }
+                if(right!=null){
+                    root.setRight(parseJson(right));
+                    if(root.getRight()!=null)
+                        root.getRight().setParent(root);
+                }
+            }
+        }
+        return root;
+    }
+
+    private List<JsonObject> getJsonObjects(String s){
+        List<JsonObject> list = new ArrayList<JsonObject>();
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        int iList = 0;
+        char ch;
+        int lScobeCount = 0;
+        int rScobeCount = 0;
+        if(s.length()>=2) {
+            s = s.substring(1);
+            s = s.substring(0, s.length() - 1);
+
+            while (i < s.length()) {
+                ch = s.charAt(i);
+                switch (ch) {
+                    case ':':
+                        if (lScobeCount == rScobeCount) {
+                            list.add(new JsonObject());
+                            list.get(iList).setKey(sb.toString());
+                            sb.delete(0, sb.length());
+                        } else
+                            sb.append(ch);
+                        break;
+                    case ',':
+                        if (lScobeCount == rScobeCount) {
+                            list.get(iList).setValue(sb.toString());
+                            sb.delete(0, sb.length());
+                            iList++;
+                            lScobeCount = 0;
+                            rScobeCount = 0;
+                        } else
+                            sb.append(ch);
+                        break;
+                    case '}':
+                        rScobeCount++;
+                        sb.append(ch);
+                        break;
+                    case '{':
+                        lScobeCount++;
+                        sb.append(ch);
+                        break;
+                    default:
+                        sb.append(ch);
+                        break;
+                }
+                i++;
+            }
+            if (iList<list.size() && !s.equals("") && lScobeCount == rScobeCount) {
+                list.get(iList).setValue(sb.toString());
+                sb.delete(0, sb.length());
+            }
+        }
+        return list;
+    }
+
+    private class JsonObject{
+        private String key;
+        private String value;
+        public JsonObject(String key, String value){
+            this.key = key;
+            this.value = value;
+        }
+
+        public JsonObject(){}
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
     }
 
     @Override

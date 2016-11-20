@@ -1,5 +1,7 @@
 package netcracker.tree;
 
+import java.io.IOException;
+
 public interface ITreeController {
     public ITreeNode create(int key, Object data);
     public boolean removeTree(int key); //удаление дерево по ключу корневого узла
@@ -11,10 +13,13 @@ public interface ITreeController {
     public void removeNode(ITreeNode parent, int key);
     public ITreeNode regularize(ITreeNode tree); //Упорядочить дерево
     public ITreeNode getTree(int key);
+    public boolean save(ITreeNode tree, String fileName) throws IOException;
+    public ITreeNode load(String fileName) throws IOException;
 
     //Необходимо еще добавить:
     //Функция по сохранению на диск
     //Функция по загрузке с диска
-    //Функция по расчеплению
+    //Функция по расщеплению
+
 
 }
