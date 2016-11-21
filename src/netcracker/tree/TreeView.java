@@ -26,7 +26,7 @@ public class TreeView implements ITreeView{
         help+="Удалить узел в открытом дереве: remove <key> \n";//
         help+="Поиск узла в открытом дереве: find <key> \n";
         help+="Удалить открытое дерево: removeTree \n";
-        help+="Клонировать открытое дерево: cloneTree \n";
+        help+="Клонировать открытое дерево: CloneTree \n";
 
         String command;
         String[] components;
@@ -67,7 +67,10 @@ public class TreeView implements ITreeView{
                                 key = Integer.parseInt(components[1]);
                                 Object value = components[2];
                                 if (tree != null) {
-                                    TreeController.getInstance().addNode(tree, key, value);
+                                    if (TreeController.getInstance().addNode(tree, key, value) == null){
+                                        System.out.println("Узел с таким ключом существует! Не добавлен.");
+                                        break;
+                                    }
                                     showTree(tree, 0, 2);
                                 } else
                                     System.out.println("Не открыто дерево для выполнения команды (справка help).");
@@ -191,7 +194,7 @@ public class TreeView implements ITreeView{
 
                         break;
                     }
-                    case "cloneTree":{
+                    case "CloneTree":{
                         int key = 0;
                         if (tree == null) {
                             System.out.println("Не открыто дерево для выполнения команды (справка help).");

@@ -1,4 +1,4 @@
-package netcracker.tree;
+﻿package netcracker.tree;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -52,17 +52,19 @@ public class TreeController implements ITreeController{
             root = parent;
             if(key>parent.getKey()) {
                 ITreeNode node = addNode(parent.getRight(), key, data);
+                if (node == null) return null;
                 root.setRight(node);
                 node.setParent(root);
             }
             else
             if(key<parent.getKey()) {
                 ITreeNode node = addNode(parent.getLeft(), key, data);
+                if (node == null) return null;
                 root.setLeft(node);
                 node.setParent(root);
             }
             else
-                parent.setData(data);
+                return null;// Искл - узел с таким ключом уже существует//parent.setData(data);
         }
         else{
             root = new TreeNode(key, data, null, null);
@@ -127,8 +129,23 @@ public class TreeController implements ITreeController{
 
 
     @Override
-    public ITreeNode addNode(ITreeNode parent, ITreeNode node) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ITreeNode addNode(ITreeNode parent, ITreeNode node) { //упорядоченное добавление 1 вершины, возвращает фактического предка(ближайшего)
+        if (node.getLeft() != null || node.getRight() != null) return null; //Следует воспользоваться ф-ей добавления дерева в дерева
+	if (parent.getKey() == node.getKey()) return null;
+        if (parent.getKey() < node.getKey()){
+            if (parent.getLeft() == null) {
+                parent.setLeft(node);
+                return  parent;
+            }
+            else return addNode(parent.getLeft(), node);
+        }
+        else {
+            if (parent.getRight() == null) {
+                parent.setRight(node);
+                return  parent;
+            }
+            else return addNode(parent.getRight(), node);
+        }
     }
 
     @Override
@@ -330,7 +347,7 @@ public class TreeController implements ITreeController{
     }
 
     @Override
-    public ITreeNode copyTo(ITreeNode sourceTree, ITreeNode destTree, ITreeNode sourceNode, ITreeNode destNode) {
+    public ITreeNode copyTo(ITreeNode sourceTree, ITreeNode destTree, ITreeNode sourceNode, ITreeNode destNode) { // ВОПРОС!!!
         return null;
     }
 
@@ -344,7 +361,6 @@ public class TreeController implements ITreeController{
     }
 
     private void settingParents (ITreeNode parent){
-
         if (parent.getLeft() != null) {
             parent.getLeft().setParent(parent);
             settingParents(parent.getLeft());
@@ -353,7 +369,6 @@ public class TreeController implements ITreeController{
             parent.getRight().setParent(parent);
             settingParents(parent.getRight());
         }
-
     }
 
 }
