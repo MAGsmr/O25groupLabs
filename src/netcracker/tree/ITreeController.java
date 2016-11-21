@@ -4,10 +4,11 @@ import java.io.IOException;
 
 public interface ITreeController {
     public ITreeNode create(int key, Object data);
+    public boolean addTreeInPool(TreeNode tree);
     public boolean removeTree(int key); //удаление дерево по ключу корневого узла
     public ITreeNode findNode(ITreeNode tree, int key);
     public ITreeNode copyTo(ITreeNode sourceTree, ITreeNode destTree, ITreeNode sourceNode, ITreeNode destNode);
-    public ITreeNode clone(ITreeNode tree);
+    public ITreeNode cloneTree(ITreeNode tree);
     public ITreeNode addNode(ITreeNode parent, ITreeNode node);
     public ITreeNode addNode(ITreeNode parent, int key, Object data);
     public void removeNode(ITreeNode parent, int key);

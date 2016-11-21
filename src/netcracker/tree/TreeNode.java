@@ -25,6 +25,7 @@ public class TreeNode implements ITreeNode{
         this.data = data;
         left = null;
         right = null;
+        parent = null;
     }
     
     public TreeNode(int key, Object data, TreeNode left, TreeNode right){
@@ -32,6 +33,7 @@ public class TreeNode implements ITreeNode{
         this.data = data;
         this.right = right;
         this.left = left;
+        parent = null;
     }
     
     public TreeNode(int key, Object data, TreeNode left, TreeNode right, TreeNode parent){
@@ -59,7 +61,7 @@ public class TreeNode implements ITreeNode{
 
     @Override
     public void setParent(ITreeNode parent) {
-        if(parent!=null)
+        //if(parent!=null)
             this.parent = (TreeNode) parent;
     }
 
@@ -95,5 +97,18 @@ public class TreeNode implements ITreeNode{
         //if(node!=null)
             right = (TreeNode) node;
     }
+
+    @Override
+    public Object clone() {
+        Object result = new TreeNode(key, data);
+        if (this.left != null)
+            ((TreeNode) result).setLeft((TreeNode) getLeft().clone());
+        if (this.right !=null)
+            ((TreeNode) result).setRight((TreeNode) getRight().clone());
+
+        return result;
+    }
+
+
     
 }

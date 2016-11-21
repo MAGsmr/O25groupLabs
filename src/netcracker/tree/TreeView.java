@@ -26,6 +26,8 @@ public class TreeView implements ITreeView{
         help+="Удалить узел в открытом дереве: remove <key> \n";//
         help+="Поиск узла в открытом дереве: find <key> \n";
         help+="Удалить открытое дерево: removeTree \n";
+        help+="Клонировать открытое дерево: cloneTree \n";
+
         String command;
         String[] components;
         System.out.println("Введите команду (справка help):");
@@ -187,6 +189,17 @@ public class TreeView implements ITreeView{
                         } else
                             System.out.println("Не открыто дерево для выполнения команды (справка help).");
 
+                        break;
+                    }
+                    case "cloneTree":{
+                        int key = 0;
+                        if (tree == null) {
+                            System.out.println("Не открыто дерево для выполнения команды (справка help).");
+                            break;
+                        }
+                        if(components.length > 1)
+                            System.out.println("Функция CloneTree не должна принимать параметров (справка help). Выполнена без учета параметров.");
+                        TreeController.getInstance().addTreeInPool( TreeController.getInstance().cloneTree(tree));
                         break;
                     }
 

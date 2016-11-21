@@ -10,7 +10,7 @@ package netcracker.tree;
  *
  * @author ВладПК
  */
-public interface ITreeNode {
+public interface ITreeNode extends Cloneable {
     public void setKey(int key);
     public int getKey();
     public ITreeNode getParent();
@@ -21,5 +21,6 @@ public interface ITreeNode {
     public void setRight(ITreeNode node);
     public Object getData();
     public void setData(Object data);
+    public Object clone();
             
 }

@@ -36,6 +36,14 @@ public class TreeController implements ITreeController{
         }
         return null;
     }
+    @Override
+    public boolean addTreeInPool(TreeNode tree) {
+        if(tree!=null){
+            TreePool.getInstance().put(tree);
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public ITreeNode addNode(ITreeNode parent, int key, Object data) {
@@ -327,8 +335,25 @@ public class TreeController implements ITreeController{
     }
 
     @Override
-    public ITreeNode clone(ITreeNode tree) {
-        return null;
+    public TreeNode cloneTree(ITreeNode tree) {
+        if (tree == null) return null;
+        TreeNode cloneNode = (TreeNode)tree.clone();
+        settingParents(cloneNode);
+
+        return cloneNode;
+    }
+
+    private void settingParents (ITreeNode parent){
+
+        if (parent.getLeft() != null) {
+            parent.getLeft().setParent(parent);
+            settingParents(parent.getLeft());
+        }
+        if (parent.getRight() != null) {
+            parent.getRight().setParent(parent);
+            settingParents(parent.getRight());
+        }
+
     }
 
 }
