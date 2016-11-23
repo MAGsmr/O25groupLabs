@@ -22,7 +22,8 @@ public class TreeView implements ITreeView{
         help+="Открыть дерево: open <key>\n";
         help+="Открыть узел текущего дерева: show <key>\n";
         help+="Закрыть узел текущего дерева: hide <key>\n";
-        help+="Добавить узел в открытое дерево: add <key> <value>\n";//
+        help+="Добавить узел в открытое дерево: add <key> <value>\n";
+        help+="Изменить значение узла по ключу в открытом дереве: set <key> <value>\n";
         help+="Разщепление(удалить 1 узел в открытом дереве): split <key> \n";//расщепление
         help+="Удалить уел с потомками в открытом дереве: remove <key>\n";
         help+="Поиск узла в открытом дереве: find <key> \n";
@@ -70,6 +71,28 @@ public class TreeView implements ITreeView{
                                 if (tree != null) {
                                     if (TreeController.getInstance().addNode(tree, key, value) == null){
                                         System.out.println("Узел с таким ключом существует! Не добавлен.");
+                                        break;
+                                    }
+                                    showTree(tree, 0, 2);
+                                } else
+                                    System.out.println("Не открыто дерево для выполнения команды (справка help).");
+                            } catch (Exception e) {
+                                System.out.println("Функция add в качестве первого параметра должна принимать целое число (справка help).");
+                            }
+                        }
+                        else
+                            System.out.println("Функция add должна принимать 2 параметра (справка help).");
+                        break;
+                    }
+                    case "set":{
+                        int key = 0;
+                        if(components.length == 3) {
+                            try {
+                                key = Integer.parseInt(components[1]);
+                                Object value = components[2];
+                                if (tree != null) {
+                                    if (TreeController.getInstance().setNode(tree, key, value) == null){
+                                        System.out.println("Узел с таким ключом не уществует.");
                                         break;
                                     }
                                     showTree(tree, 0, 2);

@@ -11,6 +11,7 @@ public interface ITreeController {
     public ITreeNode cloneTree(ITreeNode tree);
     public ITreeNode addNode(ITreeNode parent, ITreeNode node);
     public ITreeNode addNode(ITreeNode parent, int key, Object data);
+    public ITreeNode setNode(ITreeNode parent, int key, Object data);
     public void splitNode(ITreeNode parent, int key);//расщепление
     public void removeNode(ITreeNode parent, int key);//удаление с потомками
     public ITreeNode regularize(ITreeNode tree); //Упорядочить дерево

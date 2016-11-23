@@ -71,6 +71,23 @@ public class TreeController implements ITreeController{
         }
         return root;
     }
+    @Override
+    public ITreeNode setNode(ITreeNode parent, int key, Object data) {
+        if(parent!=null){
+            if(key>parent.getKey()) {
+                return setNode(parent.getRight(), key, data);
+            }
+            else
+            if(key<parent.getKey()) {
+                return setNode(parent.getLeft(), key, data);
+            }
+            else {
+                parent.setData(data);
+                return parent;
+            }
+        }
+        else return null;
+    }
 
     @Override
     public void splitNode(ITreeNode root, int key){
