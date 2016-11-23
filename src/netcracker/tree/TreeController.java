@@ -1,9 +1,8 @@
-﻿package netcracker.tree;
+package netcracker.tree;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -16,10 +15,11 @@ import java.util.Scanner;
  * @author ВладПК
  */
 public class TreeController implements ITreeController{
+
     private static TreeController instance;
 
     private TreeController(){}
-    
+
     public static synchronized TreeController getInstance(){
         if(instance == null)
             instance = new TreeController();
@@ -73,12 +73,12 @@ public class TreeController implements ITreeController{
     }
 
     @Override
-    public void removeNode(ITreeNode root, int key){
+    public void splitNode(ITreeNode root, int key){
         if ( root == null )
             return;
         else{
-            if ( key > root.getKey() ) removeNode(root.getRight(), key);
-            else if ( key < root.getKey() ) removeNode(root.getLeft(), key);
+            if ( key > root.getKey() ) splitNode(root.getRight(), key);
+            else if ( key < root.getKey() ) splitNode(root.getLeft(), key);
             else if ( key == root.getKey() ){
                 if ( root.getLeft() == null && root.getRight() == null ) {
                     if (root.getParent().getRight() == root) root.getParent().setRight(null);
@@ -107,7 +107,7 @@ public class TreeController implements ITreeController{
                         ITreeNode byf = minimumNode(root.getRight());
                         root.setData(byf.getData());
                         root.setKey(byf.getKey());
-                        removeNode(root.getRight(), byf.getKey());
+                        splitNode(root.getRight(), byf.getKey());
                     }
                 }
             }
@@ -122,6 +122,20 @@ public class TreeController implements ITreeController{
     }
 
     @Override
+    public void removeNode(ITreeNode root, int key){
+        if ( root == null )
+            return;
+        else{
+            if ( key > root.getKey() ) removeNode(root.getRight(), key);
+            else if ( key < root.getKey() ) removeNode(root.getLeft(), key);
+            else if ( key == root.getKey() ){
+                if (root.getParent().getRight() == root) root.getParent().setRight(null);
+                if (root.getParent().getLeft() == root) root.getParent().setLeft(null);
+            }
+        }
+    }
+
+    @Override
     public ITreeNode regularize(ITreeNode tree) {
         return null;
     }
@@ -131,7 +145,7 @@ public class TreeController implements ITreeController{
     @Override
     public ITreeNode addNode(ITreeNode parent, ITreeNode node) { //упорядоченное добавление 1 вершины, возвращает фактического предка(ближайшего)
         if (node.getLeft() != null || node.getRight() != null) return null; //Следует воспользоваться ф-ей добавления дерева в дерева
-	if (parent.getKey() == node.getKey()) return null;
+        if (parent.getKey() == node.getKey()) return null;
         if (parent.getKey() < node.getKey()){
             if (parent.getLeft() == null) {
                 parent.setLeft(node);
@@ -372,3 +386,4 @@ public class TreeController implements ITreeController{
     }
 
 }
+

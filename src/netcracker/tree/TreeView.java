@@ -23,7 +23,8 @@ public class TreeView implements ITreeView{
         help+="Открыть узел текущего дерева: show <key>\n";
         help+="Закрыть узел текущего дерева: hide <key>\n";
         help+="Добавить узел в открытое дерево: add <key> <value>\n";//
-        help+="Удалить узел в открытом дереве: remove <key> \n";//
+        help+="Разщепление(удалить 1 узел в открытом дереве): split <key> \n";//расщепление
+        help+="Удалить уел с потомками в открытом дереве: remove <key>\n";
         help+="Поиск узла в открытом дереве: find <key> \n";
         help+="Удалить открытое дерево: removeTree \n";
         help+="Клонировать открытое дерево: CloneTree \n";
@@ -80,6 +81,28 @@ public class TreeView implements ITreeView{
                         }
                         else
                             System.out.println("Функция add должна принимать 2 параметра (справка help).");
+                        break;
+                    }
+                    case "split":{
+                        int key = 0;
+                        if(components.length == 2) {
+                            try {
+                                key = Integer.parseInt(components[1]);
+
+                                if (tree != null) {
+                                    if (tree.getKey() != key) {
+                                        TreeController.getInstance().splitNode(tree, key);
+                                        showTree(tree, 0, 2);
+                                    } else
+                                        System.out.println("Воспользуйтесь удалением дерева целиком");
+                                } else
+                                    System.out.println("Не открыто дерево для выполнения команды (справка help).");
+                            } catch (Exception e) {
+                                System.out.println("Функция remove должна принимать целочисленный параметр (справка help).");
+                            }
+                        }
+                        else
+                            System.out.println("Функция remove должна принимать 1 параметра (справка help).");
                         break;
                     }
                     case "remove":{
