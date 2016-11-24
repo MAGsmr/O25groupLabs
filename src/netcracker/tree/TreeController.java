@@ -158,24 +158,43 @@ public class TreeController implements ITreeController{
     }
 
 
-
     @Override
-    public ITreeNode addNode(ITreeNode parent, ITreeNode node) { //упорядоченное добавление 1 вершины, возвращает фактического предка(ближайшего)
+    public ITreeNode addNode(ITreeNode parent, ITreeNode node)throws Exception{
+        if (parent==null || node == null ) return null;
+        if (node.getLeft() != null )
+            addNode(parent, node.getLeft());
+        if (node.getRight() == null )
+            addNode(parent, node.getRight());
+        addNodeWithoutChildren(parent, node);
+        return parent;
+    }
+
+    private ITreeNode addNodeWithoutChildren(ITreeNode parent, ITreeNode node) throws Exception { //упорядоченное добавление 1 вершины, возвращает фактического предка(ближайшего)
         if (node.getLeft() != null || node.getRight() != null) return null; //Следует воспользоваться ф-ей добавления дерева в дерева
-        if (parent.getKey() == node.getKey()) return null;
-        if (parent.getKey() < node.getKey()){
+        if (parent.getKey() == node.getKey()) throw new Exception(); // должен выбрасить исключение, если есть вершины с одинаковыми ключами
+        if (parent.getKey() > node.getKey()){
             if (parent.getLeft() == null) {
                 parent.setLeft(node);
+                if (node.getParent()!=null){
+                    if (node.getParent().getLeft()==node) node.getParent().setLeft(null);
+                    if (node.getParent().getRight()==node) node.getParent().setRight(null);
+                }
+                node.setParent(node);
                 return  parent;
             }
-            else return addNode(parent.getLeft(), node);
+            else return addNodeWithoutChildren(parent.getLeft(), node);
         }
         else {
             if (parent.getRight() == null) {
                 parent.setRight(node);
+                if (node.getParent()!=null){
+                    if (node.getParent().getLeft()==node) node.getParent().setLeft(null);
+                    if (node.getParent().getRight()==node) node.getParent().setRight(null);
+                }
+                node.setParent(node);
                 return  parent;
             }
-            else return addNode(parent.getRight(), node);
+            else return addNodeWithoutChildren(parent.getRight(), node);
         }
     }
 

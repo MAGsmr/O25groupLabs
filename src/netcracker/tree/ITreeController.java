@@ -9,7 +9,7 @@ public interface ITreeController {
     public ITreeNode findNode(ITreeNode tree, int key);
     public ITreeNode copyTo(ITreeNode sourceTree, ITreeNode destTree, ITreeNode sourceNode, ITreeNode destNode);
     public ITreeNode cloneTree(ITreeNode tree);
-    public ITreeNode addNode(ITreeNode parent, ITreeNode node);
+    public ITreeNode addNode(ITreeNode parent, ITreeNode node) throws Exception;
     public ITreeNode addNode(ITreeNode parent, int key, Object data);
     public ITreeNode setNode(ITreeNode parent, int key, Object data);
     public void splitNode(ITreeNode parent, int key);//расщепление
