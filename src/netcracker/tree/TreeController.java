@@ -37,7 +37,7 @@ public class TreeController implements ITreeController{
         return null;
     }
     @Override
-    public boolean addTreeInPool(TreeNode tree) {
+    public boolean addTreeInPool(ITreeNode tree) {
         if(tree!=null){
             TreePool.getInstance().put(tree);
             return true;
@@ -298,7 +298,7 @@ public class TreeController implements ITreeController{
                 }
             }
             if(key!=null && value!=null){
-                root= new TreeNode(key, root);
+                root= new TreeNode(key, value);
                 if(left!=null){
                     root.setLeft(parseJson(left));
                     if(root.getLeft()!=null)

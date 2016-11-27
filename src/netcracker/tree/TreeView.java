@@ -6,6 +6,7 @@ package netcracker.tree;
  * and open the template in the editor.
  */
 
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -25,10 +26,13 @@ public class TreeView implements ITreeView{
         help+="Добавить узел в открытое дерево: add <key> <value>\n";
         help+="Изменить значение узла по ключу в открытом дереве: set <key> <value>\n";
         help+="Разщепление(удалить 1 узел в открытом дереве): split <key> \n";//расщепление
-        help+="Удалить уел с потомками в открытом дереве: remove <key>\n";
+        help+="Удалить узел с потомками в открытом дереве: remove <key>\n";
         help+="Поиск узла в открытом дереве: find <key> \n";
         help+="Удалить открытое дерево: removeTree \n";
         help+="Клонировать открытое дерево: CloneTree \n";
+        help+="Сохранить текущее открытое дерево: save <file_name>\n";
+        help+="Загрущить дерево: load <file_name> \n";
+
 
         String command;
         String[] components;
@@ -99,11 +103,11 @@ public class TreeView implements ITreeView{
                                 } else
                                     System.out.println("Не открыто дерево для выполнения команды (справка help).");
                             } catch (Exception e) {
-                                System.out.println("Функция add в качестве первого параметра должна принимать целое число (справка help).");
+                                System.out.println("Функция set в качестве первого параметра должна принимать целое число (справка help).");
                             }
                         }
                         else
-                            System.out.println("Функция add должна принимать 2 параметра (справка help).");
+                            System.out.println("Функция set должна принимать 2 параметра (справка help).");
                         break;
                     }
                     case "split":{
@@ -121,7 +125,7 @@ public class TreeView implements ITreeView{
                                 } else
                                     System.out.println("Не открыто дерево для выполнения команды (справка help).");
                             } catch (Exception e) {
-                                System.out.println("Функция remove должна принимать целочисленный параметр (справка help).");
+                                System.out.println("Функция split должна принимать целочисленный параметр (справка help).");
                             }
                         }
                         else
@@ -184,11 +188,11 @@ public class TreeView implements ITreeView{
                                     System.out.println("Дерево с таким ключом не найдено (справка help).");
                             }
                             catch(Exception e){
-                                System.out.println("Функция show должна принимать целочисленный параметр (справка help).");
+                                System.out.println("Функция open должна принимать целочисленный параметр (справка help).");
                             }
                         }
                         else
-                            System.out.println("Функция show должна принимать 1 параметр (справка help).");
+                            System.out.println("Функция open должна принимать 1 параметр (справка help).");
                         break;
                     }
                     case "show":{
@@ -204,11 +208,11 @@ public class TreeView implements ITreeView{
                                 else
                                     System.out.println("Не открыто дерево для выполнения команды (справка help):");
                             } catch (Exception e) {
-                                System.out.println("Функция open должна принимать целочисленный параметр (справка help).");
+                                System.out.println("Функция show должна принимать целочисленный параметр (справка help).");
                             }
                         }
                         else
-                            System.out.println("Функция open должна принимать 1 параметр (справка help).");
+                            System.out.println("Функция show должна принимать 1 параметр (справка help).");
                         break;
                     }
                     case "hide":{
@@ -251,8 +255,42 @@ public class TreeView implements ITreeView{
                         TreeController.getInstance().addTreeInPool( TreeController.getInstance().cloneTree(tree));
                         break;
                     }
-
-
+                    case "load":{
+                        if(components.length == 2) {
+                            try {
+                                System.out.println("Загрузка дерева...");
+                                ITreeNode loadedTree = TreeController.getInstance().load(components[1]);
+                                if(loadedTree!=null){
+                                    System.out.println("Дерево успешно загружено!");
+                                    tree = loadedTree;
+                                    TreeController.getInstance().addTreeInPool(tree);
+                                    showTree(tree, 0, 2);
+                                }
+                                else
+                                    System.out.println("Не удалось открыть дерево (справка help).");
+                            } catch (IOException e) {
+                                System.out.println("Не удалось открыть/прочитать файл с таким именем (справка help).");
+                            }
+                        }
+                        else
+                            System.out.println("Функция load должна принимать 1 параметр (справка help).");
+                        break;
+                    }
+                    case "save":{
+                        if(components.length == 2) {
+                            try {
+                                if(TreeController.getInstance().save(tree, components[1]))
+                                    System.out.println("Дерево успешно сохранено (справка help).");
+                                else
+                                    System.out.println("Не удалось сохранить дерево (справка help).");
+                            } catch (IOException e) {
+                                System.out.println("Не удалось сохранить дерево (справка help).");
+                            }
+                        }
+                        else
+                            System.out.println("Функция save должна принимать 1 параметр (справка help).");
+                        break;
+                    }
 
 
                     default:
