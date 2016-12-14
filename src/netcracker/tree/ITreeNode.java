@@ -6,11 +6,13 @@ package netcracker.tree;
  * and open the template in the editor.
  */
 
+import java.util.Comparator;
+
 /**
  *
  * @author ВладПК
  */
-public interface ITreeNode extends Cloneable {
+public interface ITreeNode extends Cloneable{
     public void setKey(int key);
     public int getKey();
     public ITreeNode getParent();

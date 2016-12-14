@@ -2,6 +2,7 @@ package netcracker.tree;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -153,10 +154,50 @@ public class TreeController implements ITreeController{
     }
 
     @Override
-    public ITreeNode regularize(ITreeNode tree) {
-        return null;
+    public ITreeNode sortTree(ITreeNode tree, String strComparator) {
+        Comparator<ITreeNode> c = null;
+        System.out.println(strComparator);
+        if (strComparator.equals("key")) c = new keyComparator();
+        if (strComparator.equals("data")) c = new dataStringComparator();
+        ITreeNode tmp = tree;
+        if (removeTree(tree.getKey())==true){
+            ArrayList<ITreeNode> ar = new ArrayList<ITreeNode>();
+            ar = getArray(ar, tmp);
+            System.out.println(ar.size());
+            ar.sort(c);
+            tmp = null;
+            ITreeNode result = getTreeFromArray(ar, 0, ar.size()-1, tmp);
+            addTreeInPool(result);
+            return result;
+        }
+        else return null;
     }
 
+    private ArrayList<ITreeNode> getArray (ArrayList<ITreeNode> ar, ITreeNode node){
+        if (node == null) return null;
+        if (!(node.getLeft()==null && node.getRight()==null)){
+            if (node.getLeft()!=null){
+                getArray(ar, node.getLeft());
+                node.setLeft(null);
+            }
+            if (node.getRight()!=null){
+                getArray(ar, node.getRight());
+                node.setRight(null);
+            }
+        }
+        ar.add(node);
+        return ar;
+    }
+
+    private ITreeNode getTreeFromArray(ArrayList<ITreeNode> ar, int start, int end, ITreeNode tree){
+        int base = (end-start+1)/2;
+        tree=ar.get(start+base);
+        tree.setLeft(null);
+        tree.setRight(null);
+        if (base+start+1<=end) tree.setRight(getTreeFromArray(ar, start+base+1, end, tree.getRight()));
+        if (start+base-1>=start) tree.setLeft(getTreeFromArray(ar, start, start+base-1, tree.getLeft()));
+        return tree;
+    }
 
     @Override
     public ITreeNode addNode(ITreeNode parent, ITreeNode node)throws Exception{

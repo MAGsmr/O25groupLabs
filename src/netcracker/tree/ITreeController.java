@@ -1,6 +1,7 @@
 package netcracker.tree;
 
 import java.io.IOException;
+import java.util.Comparator;
 
 public interface ITreeController {
     public ITreeNode create(int key, Object data);
@@ -14,7 +15,7 @@ public interface ITreeController {
     public ITreeNode setNode(ITreeNode parent, int key, Object data);
     public void splitNode(ITreeNode parent, int key);//расщепление
     public void removeNode(ITreeNode parent, int key);//удаление с потомками
-    public ITreeNode regularize(ITreeNode tree); //Упорядочить дерево
+    public ITreeNode sortTree(ITreeNode tree, String c); //Упорядочить дерево
     public ITreeNode getTree(int key);
     public boolean save(ITreeNode tree, String fileName) throws IOException;
     public ITreeNode load(String fileName) throws IOException;

@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author ВладПК
  */
-public class TreeNode implements ITreeNode{
+public class TreeNode implements ITreeNode {
     private int key;
     private TreeNode parent;
     private TreeNode left;

@@ -32,6 +32,7 @@ public class TreeView implements ITreeView{
         help+="Клонировать открытое дерево: CloneTree \n";
         help+="Сохранить текущее открытое дерево: save <file_name>\n";
         help+="Загрущить дерево: load <file_name> \n";
+        help+="Отсортировать текущее дерево: sortTree <value_for_sorting> //key или data\n";
 
 
         String command;
@@ -289,6 +290,27 @@ public class TreeView implements ITreeView{
                         }
                         else
                             System.out.println("Функция save должна принимать 1 параметр (справка help).");
+                        break;
+                    }
+                    case "sortTree":{
+                        String strComparator = "key";
+                        if(components.length == 2) {
+                            try {
+                                strComparator = components[1];
+                                if ( strComparator.equals("data") || strComparator.equals("key") ) {
+                                    if (tree != null) {
+                                        tree = TreeController.getInstance().sortTree(tree, strComparator);
+                                        showTree(tree, 0, 2);
+                                    } else
+                                        System.out.println("Не открыто дерево для выполнения команды (справка help).");
+                                } else
+                                    System.out.println("Неверный критерий сортировки");
+                            } catch (Exception e) {
+                                System.out.println("Функция sortTree в качестве первого параметра должна принимать cтроку(key или data) (справка help).");
+                            }
+                        }
+                        else
+                            System.out.println("Функция add должна принимать 2 параметра (справка help).");
                         break;
                     }
 
