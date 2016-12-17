@@ -23,7 +23,7 @@ public class TreeController implements ITreeController{
 
     private TreeController(){}
 
-    public static synchronized TreeController getInstance(){
+    public static TreeController getInstance(){
         if(instance == null)
             instance = new TreeController();
         return instance;

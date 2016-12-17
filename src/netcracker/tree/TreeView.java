@@ -17,7 +17,7 @@ public class TreeView implements ITreeView{
 
 
     @Override
-    public void input(){
+    public void input() throws IOException {
         Scanner sc = new Scanner(System.in);
         String help ="Создать дерево с корневым узлом: create <key> <value>\n";//
         help+="Открыть дерево: open <key>\n";
@@ -25,7 +25,7 @@ public class TreeView implements ITreeView{
         help+="Закрыть узел текущего дерева: hide <key>\n";
         help+="Добавить узел в открытое дерево: add <key> <value>\n";
         help+="Изменить значение узла по ключу в открытом дереве: set <key> <value>\n";
-        help+="Разщепление(удалить 1 узел в открытом дереве): split <key> \n";//расщепление
+        help+="Раcщепление(удалить 1 узел в открытом дереве): split <key> \n";//расщепление
         help+="Удалить узел с потомками в открытом дереве: remove <key>\n";
         help+="Поиск узла в открытом дереве: find <key> \n";
         help+="Удалить открытое дерево: removeTree \n";
@@ -395,7 +395,7 @@ public class TreeView implements ITreeView{
         }
     }
 
-    private void printNode(ITreeNode node, int offset){
+    protected void printNode(ITreeNode node, int offset){
 
         StringBuffer spaces = new StringBuffer();
         for(int i =0; i < offset; i++) spaces.append('-');

@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package netcracker.tree;
+import sun.reflect.generics.tree.Tree;
+
+import java.io.IOException;
 import java.util.Random;
 /**
  *
@@ -14,8 +17,16 @@ public class NetCracker_Tree {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         new TreeView().input();
+        //ITreeNode tree = TreeController.getInstance().create(10, "ROOT");
+        //tree = null;
+        //tree = TreeController.getInstance().addNode(tree, 11, "right");
+        //tree = TreeController.getInstance().addNode(tree, 9, "left");
+        //TreeController.getInstance().save(tree, "File.txt");
+        //ITreeNode node = TreeController.getInstance().load("File.txt");
+        //TreeView tr = new TreeView();
+        //tr.showTree(node, 0, 2);
     }
     
 }
