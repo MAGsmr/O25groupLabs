@@ -1,6 +1,6 @@
 package netcracker.net.client;
 
-import netcracker.net.ISettings;
+import netcracker.net.ServerSettings;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,8 +32,8 @@ public class ClientController implements IClientController {
     @Override
     public boolean connect(String host, int port) {
         try {
-            InetAddress address = InetAddress.getByName(ISettings.host);
-            socket = new Socket(address, ISettings.PORT);
+            InetAddress address = InetAddress.getByName(ServerSettings.host);
+            socket = new Socket(address, ServerSettings.PORT);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintStream(socket.getOutputStream());
             return true;

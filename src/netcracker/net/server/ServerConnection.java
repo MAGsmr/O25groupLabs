@@ -1,6 +1,6 @@
 package netcracker.net.server;
 
-import netcracker.net.ISettings;
+import netcracker.net.ServerSettings;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,7 +15,7 @@ public class ServerConnection implements IServerConnection {
 
     @Override
     public void init() throws IOException {
-        serverSocket = new ServerSocket(ISettings.PORT);
+        serverSocket = new ServerSocket(ServerSettings.PORT);
         isRun = true;
         while(isRun){
             Socket socket = serverSocket.accept();

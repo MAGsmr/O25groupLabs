@@ -1,12 +1,10 @@
 package netcracker.net.client;
 
 import netcracker.json.Json;
-import netcracker.net.ISettings;
-import netcracker.tree.ITreeNode;
+import netcracker.net.ServerSettings;
 import netcracker.tree.TreeView;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -18,7 +16,7 @@ public class ClientView extends TreeView implements IClientView {
 
     @Override
     public void input() throws  IOException{
-        if(!ClientController.getInstance().connect(ISettings.host, ISettings.PORT)){
+        if(!ClientController.getInstance().connect(ServerSettings.host, ServerSettings.PORT)){
             System.out.println("Соединение не установлено, завершение работы...");
             return;
         }
@@ -40,9 +38,6 @@ public class ClientView extends TreeView implements IClientView {
                         String[] list = ClientController.getInstance().getResponse().split("#");
                         for(int i = 0; i < list.length; i++)
                             help+=list[i]+"\n";
-                        //for (String s : ClientController.getInstance().getResponse().split("|")) {
-                        //    help+=s;
-                        //}
                         System.out.println(help);
                         break;
                     }
@@ -52,11 +47,23 @@ public class ClientView extends TreeView implements IClientView {
                         System.out.println(getMessage(response));
                         break;
                     }
+                    case "reg":{
+                        ClientController.getInstance().send(command);
+                        String response = ClientController.getInstance().getResponse();
+                        System.out.println(getMessage(response));
+                        break;
+                    }
+                    case "auth":{
+                        ClientController.getInstance().send(command);
+                        String response = ClientController.getInstance().getResponse();
+                        System.out.println(getMessage(response));
+                        break;
+                    }
                     case "add":{
                         ClientController.getInstance().send(command);
                         String response = ClientController.getInstance().getResponse();
                         String message = getMessage(response);
-                        if(ISettings.compareCode(response, ISettings.SUCCESSFUL))
+                        if(ServerSettings.compareCode(response, ServerSettings.SUCCESSFUL))
                             showTree(Json.parseJson(message), 0, 2);
                         else
                             System.out.println(message);
@@ -66,7 +73,7 @@ public class ClientView extends TreeView implements IClientView {
                         ClientController.getInstance().send(command);
                         String response = ClientController.getInstance().getResponse();
                         String message = getMessage(response);
-                        if(ISettings.compareCode(response, ISettings.SUCCESSFUL))
+                        if(ServerSettings.compareCode(response, ServerSettings.SUCCESSFUL))
                             showTree(Json.parseJson(message), 0, 2);
                         else
                             System.out.println(message);
@@ -76,7 +83,7 @@ public class ClientView extends TreeView implements IClientView {
                         ClientController.getInstance().send(command);
                         String response = ClientController.getInstance().getResponse();
                         String message = getMessage(response);
-                        if(ISettings.compareCode(response, ISettings.SUCCESSFUL))
+                        if(ServerSettings.compareCode(response, ServerSettings.SUCCESSFUL))
                             showTree(Json.parseJson(message), 0, 2);
                         else
                             System.out.println(message);
@@ -86,7 +93,7 @@ public class ClientView extends TreeView implements IClientView {
                         ClientController.getInstance().send(command);
                         String response = ClientController.getInstance().getResponse();
                         String message = getMessage(response);
-                        if(ISettings.compareCode(response, ISettings.SUCCESSFUL))
+                        if(ServerSettings.compareCode(response, ServerSettings.SUCCESSFUL))
                             showTree(Json.parseJson(message), 0, 2);
                         else
                             System.out.println(message);
@@ -96,7 +103,7 @@ public class ClientView extends TreeView implements IClientView {
                         ClientController.getInstance().send(command);
                         String response = ClientController.getInstance().getResponse();
                         String message = getMessage(response);
-                        if(ISettings.compareCode(response, ISettings.SUCCESSFUL))
+                        if(ServerSettings.compareCode(response, ServerSettings.SUCCESSFUL))
                             printNode(Json.parseJson(message), 2);
                         else
                             System.out.println(message);
@@ -107,7 +114,7 @@ public class ClientView extends TreeView implements IClientView {
                         ClientController.getInstance().send(command);
                         String response = ClientController.getInstance().getResponse();
                         String message = getMessage(response);
-                        if(ISettings.compareCode(response, ISettings.SUCCESSFUL)){
+                        if(ServerSettings.compareCode(response, ServerSettings.SUCCESSFUL)){
                             showTree(Json.parseJson(message), 0, 2);
                         }
                         else
@@ -118,7 +125,7 @@ public class ClientView extends TreeView implements IClientView {
                         ClientController.getInstance().send(command);
                         String response = ClientController.getInstance().getResponse();
                         String message = getMessage(response);
-                        if(ISettings.compareCode(response, ISettings.SUCCESSFUL))
+                        if(ServerSettings.compareCode(response, ServerSettings.SUCCESSFUL))
                             showNode(Json.parseJson(message.substring(message.indexOf(" ")+1)),
                                     Integer.parseInt(message.substring(0, message.indexOf(" "))), 0,2);
                         else
@@ -129,7 +136,7 @@ public class ClientView extends TreeView implements IClientView {
                         ClientController.getInstance().send(command);
                         String response = ClientController.getInstance().getResponse();
                         String message = getMessage(response);
-                        if(ISettings.compareCode(response, ISettings.SUCCESSFUL))
+                        if(ServerSettings.compareCode(response, ServerSettings.SUCCESSFUL))
                             hideNode(Json.parseJson(message.substring(message.indexOf(" ")+1)),
                                     Integer.parseInt(message.substring(0, message.indexOf(" "))), 0,2);
                         else
@@ -154,7 +161,7 @@ public class ClientView extends TreeView implements IClientView {
                         ClientController.getInstance().send(command);
                         String response = ClientController.getInstance().getResponse();
                         String message = getMessage(response);
-                        if(ISettings.compareCode(response, ISettings.SUCCESSFUL))
+                        if(ServerSettings.compareCode(response, ServerSettings.SUCCESSFUL))
                             showTree(Json.parseJson(message), 0, 2);
                         else
                             System.out.println(message);
@@ -171,7 +178,7 @@ public class ClientView extends TreeView implements IClientView {
                         ClientController.getInstance().send(command);
                         String response = ClientController.getInstance().getResponse();
                         String message = getMessage(response);
-                        if(ISettings.compareCode(response, ISettings.SUCCESSFUL))
+                        if(ServerSettings.compareCode(response, ServerSettings.SUCCESSFUL))
                             showTree(Json.parseJson(message), 0, 2);
                         else
                             System.out.println(message);
