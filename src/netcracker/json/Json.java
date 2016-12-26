@@ -1,8 +1,7 @@
 package netcracker.json;
 
-import netcracker.tree.ITreeNode;
-import netcracker.tree.TreeController;
-import netcracker.tree.TreeNode;
+import netcracker.tree.Nodes.ITreeNode;
+import netcracker.tree.Nodes.TreeNode;
 
 import java.util.ArrayList;
 import java.util.List;

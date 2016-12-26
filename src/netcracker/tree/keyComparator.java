@@ -1,5 +1,7 @@
 package netcracker.tree;
 
+import netcracker.tree.Nodes.ITreeNode;
+
 import java.util.Comparator;
 
 /**

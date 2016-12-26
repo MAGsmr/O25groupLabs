@@ -2,7 +2,7 @@ package netcracker.net.client;
 
 import netcracker.json.Json;
 import netcracker.net.ServerSettings;
-import netcracker.tree.TreeView;
+import netcracker.tree.Views.TreeView;
 
 import java.io.IOException;
 import java.util.Scanner;

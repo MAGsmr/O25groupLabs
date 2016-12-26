@@ -1,6 +1,6 @@
 package netcracker.net.client;
 
-import netcracker.tree.ITreeView;
+import netcracker.tree.Views.ITreeView;
 
 import java.io.IOException;
 

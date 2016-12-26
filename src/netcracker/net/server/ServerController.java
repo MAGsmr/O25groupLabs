@@ -2,7 +2,7 @@ package netcracker.net.server;
 
 import netcracker.json.Json;
 import netcracker.net.ServerSettings;
-import netcracker.tree.TreeController;
+import netcracker.tree.Controllers.TreeController;
 
 import java.io.*;
 import java.net.Socket;

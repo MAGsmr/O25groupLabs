@@ -1,7 +1,8 @@
-package netcracker.tree;
+package netcracker.tree.Controllers;
+
+import netcracker.tree.Nodes.ITreeNode;
 
 import java.io.IOException;
-import java.util.Comparator;
 
 public interface ITreeController {
     public ITreeNode create(int key, Object data);
