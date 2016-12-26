@@ -158,14 +158,12 @@ public class TreeController implements ITreeController{
     @Override
     public ITreeNode sortTree(ITreeNode tree, String strComparator) {
         Comparator<ITreeNode> c = null;
-        System.out.println(strComparator);
         if (strComparator.equals("key")) c = new keyComparator();
         if (strComparator.equals("data")) c = new dataStringComparator();
         ITreeNode tmp = tree;
         if (removeTree(tree.getKey())==true){
             ArrayList<ITreeNode> ar = new ArrayList<ITreeNode>();
             ar = getArray(ar, tmp);
-            System.out.println(ar.size());
             ar.sort(c);
             tmp = null;
             ITreeNode result = getTreeFromArray(ar, 0, ar.size()-1, tmp);

@@ -60,6 +60,7 @@ public class ClientView extends TreeView implements IClientView {
                             showTree(Json.parseJson(message), 0, 2);
                         else
                             System.out.println(message);
+                        break;
                     }
                     case "set":{
                         ClientController.getInstance().send(command);
@@ -69,6 +70,7 @@ public class ClientView extends TreeView implements IClientView {
                             showTree(Json.parseJson(message), 0, 2);
                         else
                             System.out.println(message);
+                        break;
                     }
                     case "split":{
                         ClientController.getInstance().send(command);
